@@ -1,0 +1,5 @@
+Popa_Andrei 200
+Popescu_Ilie 100
+Dumitrescu_Mihai 300
+Anghel_Ciprian 250
+Nastase_Laurentiu 500
