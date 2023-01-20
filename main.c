@@ -34,7 +34,6 @@ typedef struct Client
 
 typedef struct Banca
 {
-    Client* clienti;
     double balanta_banca;
     float comision;
 
@@ -46,7 +45,7 @@ void createClients(Client **c,int i)
     int j;
     *c = malloc(i*sizeof(Client));
     FILE *f = fopen ("nume_balanta.txt","r");
-    for(j=0; j<i&&fgets(n, sizeof(n), f);j++)
+    for(j=0; j<i&&fgets(n, sizeof(n), f); j++)
     {
         sscanf(n,"%29s %f", (*c)[j].nume, &(*c)[j].balanta);
         (*c)[j].imprumut_activ=0;
@@ -179,7 +178,7 @@ void setClientBalance(Client *c, int i)
 
 void deleteClient(Client **c, int *i)
 {
-    int k,j,index=-1;
+    int k,index=-1;
     char n[NUME_MAX];
 
     printf("\nIntroduceti numele clientului: ");
@@ -196,12 +195,11 @@ void deleteClient(Client **c, int *i)
     }
     else
     {
-        for(j=0; j<(*i); j++)
+        for( int j=0; j<(*i); j++)
         {
             if(strcmp((*c)[j].nume, n) == 0)
             {
                 memset((*c)[j].nume,0,sizeof((*c)[j].nume));
-                int k;
                 for (k = index ; k < *i - 1; k++)
                 {
                     (*c)[k] = (*c)[k + 1];
@@ -279,20 +277,20 @@ void Transfer(Banca b, Client *c, int i)
             return;
     }
 
-printf("\nAlege suma: ");
-scanf("%f", &s);
-b.comision = 0.03 * s;
-while(s>(c[i-1].balanta-b.comision))
-{
-    printf("\nClientul %s nu are suficienti bani pentru acest trasnfer! Introduceti o suma mai mica: ", c[i-1].nume);
+    printf("\nAlege suma: ");
     scanf("%f", &s);
     b.comision = 0.03 * s;
-}
-c[i-1].balanta = c[i-1].balanta - s - b.comision;
-c[j-1].balanta += s;
+    while(s>(c[i-1].balanta-b.comision))
+    {
+        printf("\nClientul %s nu are suficienti bani pentru acest trasnfer! Introduceti o suma mai mica: ", c[i-1].nume);
+        scanf("%f", &s);
+        b.comision = 0.03 * s;
+    }
+    c[i-1].balanta = c[i-1].balanta - s - b.comision;
+    c[j-1].balanta += s;
 
-printf("\nComision suportat de catre clientul %s: %.2f\n",c[i-1].nume, b.comision);
-printf("\nTrasnfer efectuat cu succes!\n");
+    printf("\nComision suportat de catre clientul %s: %.2f\n",c[i-1].nume, b.comision);
+    printf("\nTrasnfer efectuat cu succes!\n");
 }
 
 void addClient(Client **c, unsigned int i)
@@ -424,10 +422,11 @@ void extras(Client *c, int i)
 
     }
 
-
     time_t current_time=time(NULL);
     struct tm*tm =localtime(&current_time);
-    printf("\n\t\t\t\tExtras de cont generat in data : %s\n", asctime(tm));
+   char buffer[20];
+strftime(buffer, 20, "%Y-%m-%d %H:%M:%S", tm);
+printf("\n\t\t\t\tExtras de cont generat in data : %s\n", buffer);
     printf("\nCod IBAN: %u\n", c[j-1].iban);
     printf("\nProduse in valuta RON\n");
     printf("\nTitular: %s\n", c[j-1].nume);
@@ -559,5 +558,5 @@ int main()
         scanf("%d", &choice);
     }
     free(c);
-  return 0;
+    return 0;
 }
