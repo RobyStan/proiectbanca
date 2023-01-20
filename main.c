@@ -398,7 +398,7 @@ void extras(Client *c, int i)
     i2=0;
     while(i2<i)
     {
-        if(strcmp(c[i2+1].nume,"NULL"))
+        if(strcmp(c[i2].nume,""))
             printf("%d - %s\n", i2+1, c[i2].nume);
         i2++;
     }
